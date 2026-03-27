@@ -174,14 +174,15 @@ def login_usuario(request):
             user = form.get_user()
             login(request, user)
             
+            # ✅ SI ES SUPERUSUARIO, IR AL ADMIN
+            if user.is_superuser:
+                return redirect('/admin/')
+            
             # ✅ VERIFICAR SI TIENE PREFERENCIAS
             try:
-                # Intenta obtener las preferencias del usuario
                 preferencias = PreferenciasUsuario.objects.get(usuario=user)
-                # Si ya tiene preferencias, va a la carta filtrada
                 return redirect('carta_con_filtros')
             except PreferenciasUsuario.DoesNotExist:
-                # Si NO tiene preferencias, va a configurarlas
                 return redirect('configurar_preferencias')
     else:
         form = LoginForm()
@@ -201,7 +202,9 @@ from django.contrib.auth import logout
 
 def logout_usuario(request):
     logout(request)
-    return redirect('login')
+    if request.user.is_authenticated and request.user.is_superuser:
+        return redirect('login')
+    return redirect('carta')
 
 
 
