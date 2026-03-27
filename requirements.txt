@@ -13,3 +13,4 @@ pillow
 requests
 
 cloudinary
+django-cloudinary-storage==0.2.1

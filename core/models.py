@@ -24,7 +24,6 @@ class Producto(models.Model):
     disponible = models.BooleanField(default=True)
     promocion = models.BooleanField(default=False)
     
-    # Campo para la imagen
     imagen = models.ImageField(upload_to='productos/', null=True, blank=True)
     
     # Otros campos que ya tienes
