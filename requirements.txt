@@ -13,4 +13,3 @@ pillow
 requests
 
 cloudinary
-cloudinary-storage

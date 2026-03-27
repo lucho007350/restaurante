@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cloudinary',
-    'cloudinary_storage',
 
     # Tu app
     'core',
@@ -179,16 +178,11 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-
+DEFAULT_FILE_STORAGE = 'cloudinary.uploader'
 
 import cloudinary
-
 cloudinary.config(
-    cloud_name = 'dqroixift',
-    api_key = '132359533755626',
-    api_secret = 'j1nDxCuMZ9VK-uwAqygwoiZ0pGM'
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME', 'dqroixift'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY', '132359533755626'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET', 'j1nDxCuMZ9VK-uwAqygwoiZ0pGM'),
 )
-
-
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
