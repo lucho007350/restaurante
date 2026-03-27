@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
+    'cloudinary_storage',
 
     # Tu app
     'core',
@@ -112,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
 # ==============================
 # 🌍 IDIOMA
 # ==============================
@@ -175,3 +178,17 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name = 'dqroixift',
+    api_key = '132359533755626',
+    api_secret = 'j1nDxCuMZ9VK-uwAqygwoiZ0pGM'
+)
+
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
