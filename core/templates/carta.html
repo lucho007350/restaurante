@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante Gourmet - Carta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c49b63;
+            --primary-dark: #a17a45;
+            --secondary: #5a4a3a;
+            --accent: #e67e22;
+            --dark: #2c3e50;
+            --light: #fef9e7;
+            --gold: #d4af37;
+            --warm-bg: #faf3e0;
+            --card-bg: #ffffff;
+            --text-dark: #3a2e2a;
+            --text-soft: #5d4e46;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--warm-bg);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Navbar Premium - Más cálido */
+        .navbar-premium {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            margin: 0 15px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-points {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white !important;
+            border-radius: 30px;
+            padding: 8px 20px !important;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(196, 155, 99, 0.3);
+        }
+
+        /* ✅ BOTONES DE LOGIN Y REGISTRO EN DORADO */
+        .btn-login,
+        .btn-register {
+            background: linear-gradient(135deg, var(--primary), var(--gold)) !important;
+            border: none !important;
+            color: white !important;
+            font-weight: 600 !important;
+            padding: 8px 20px !important;
+            border-radius: 30px !important;
+            transition: all 0.3s !important;
+            text-decoration: none !important;
+            display: inline-block !important;
+            box-shadow: 0 4px 10px rgba(196, 155, 99, 0.2) !important;
+        }
+
+        .btn-login:hover,
+        .btn-register:hover {
+            background: linear-gradient(135deg, var(--gold), var(--primary)) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 15px rgba(196, 155, 99, 0.4) !important;
+            color: white !important;
+        }
+
+        /* Hero Section - Más elegante */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Card - Estilo cálido */
+        .stats-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(196, 155, 99, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-soft);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* Filtros - Manteniendo estilo */
+        .filters-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(196, 155, 99, 0.1);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #f0f0f0;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(196, 155, 99, 0.1);
+            background: white;
+        }
+
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 10px 25px;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: transparent;
+            font-size: 0.95rem;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(196, 155, 99, 0.3);
+            border-color: transparent;
+        }
+
+        /* Grid de Productos */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(196, 155, 99, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 45px rgba(196, 155, 99, 0.2);
+            border-color: var(--primary);
+        }
+
+        .product-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--accent), #d35400);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-category {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            color: var(--text-soft);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fef9e7;
+            border-radius: 12px;
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .price-discount {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 2rem;
+        }
+
+        .price-normal {
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--text-dark);
+        }
+
+        .discount-tag {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(196, 155, 99, 0.4);
+            color: white;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 25px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-pdf:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+            color: white;
+        }
+
+        .count-badge {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-card .row {
+                flex-direction: column;
+            }
+            
+            .stat-item {
+                margin-bottom: 20px;
+            }
+            
+            .stat-item:last-child {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-premium navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'carta' %}">
+                <i class="fas fa-crown me-2"></i>Gourmet
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'carta' %}">Inicio</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mis_beneficios' %}">Beneficios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'historial' %}">Historial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'configurar_preferencias' %}">Preferencias</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    {% if user.is_authenticated %}
+                        <span class="btn-points">
+                            <i class="fas fa-star me-1"></i>{{ puntos }} pts
+                            {% if cliente and cliente.descuento_nivel > 0 %}
+                                <span class="ms-2">{{ cliente.descuento_nivel }}% OFF</span>
+                            {% endif %}
+                        </span>
+                        <a href="{% url 'ver_carrito' %}" class="btn btn-outline-warning">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    {% else %}
+                        <!-- ✅ BOTONES EN DORADO -->
+                        <a href="{% url 'login' %}" class="btn-login">Login</a>
+                        <a href="{% url 'registro' %}" class="btn-register">Registro</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Sabores que Enamoran</h1>
+            <p class="hero-subtitle">Descubre nuestra exquisita selección de platillos preparados con los mejores ingredientes</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Stats del Usuario -->
+        {% if user.is_authenticated and cliente %}
+        <div class="stats-card">
+            <div class="row">
+                <div class="col-md-4 stat-item">
+                    <div class="stat-value">{{ puntos }}</div>
+                    <div class="stat-label">PUNTOS ACUMULADOS</div>
+                </div>
+                <div class="col-md-4 stat-item">
+                    <div class="stat-value">{{ cliente.nivel|title }}</div>
+                    <div class="stat-label">NIVEL ACTUAL</div>
+                </div>
+                <div class="col-md-4 stat-item">
+                    <div class="stat-value">{{ cliente.descuento_nivel }}%</div>
+                    <div class="stat-label">DESCUENTO</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Filtros -->
+        <div class="filters-section">
+            <form method="get" class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" name="buscar" placeholder="Buscar por nombre..." value="{{ request.GET.buscar }}">
+            </form>
+
+            <div class="category-filters">
+                <a href="{% url 'carta' %}" class="category-btn {% if not request.GET.categoria %}active{% endif %}">
+                    Todos
+                </a>
+                {% for categoria in categorias %}
+                    <a href="?categoria={{ categoria.id }}" class="category-btn {% if request.GET.categoria == categoria.id|stringformat:'i' %}active{% endif %}">
+                        {{ categoria.nombre }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Título y contador -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-dark">Nuestra Carta</h2>
+            <div class="d-flex gap-3">
+                <a href="{% url 'descargar_menu_pdf' %}" class="btn-pdf">
+                    <i class="fas fa-file-pdf"></i> Menú PDF
+                </a>
+                <span class="count-badge">
+                    <i class="fas fa-box me-2"></i>{{ productos_con_precio|length }} platos
+                </span>
+            </div>
+        </div>
+
+        <!-- Grid de Productos -->
+        <div class="product-grid">
+            {% for item in productos_con_precio %}
+            <div class="product-card">
+                <div class="product-image">
+                    {% if item.imagen %}
+                        <img src="{{ item.imagen.url }}" alt="{{ item.nombre }}">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="{{ item.nombre }}">
+                    {% endif %}
+                    
+                    {% if item.promocion %}
+                        <span class="product-badge">
+                            <i class="fas fa-fire"></i> PROMO
+                        </span>
+                    {% endif %}
+                </div>
+                
+                <div class="product-info">
+                    <div class="product-category">
+                        <i class="fas fa-tag me-1"></i>{{ item.categoria.nombre }}
+                    </div>
+                    
+                    <h3 class="product-title">{{ item.nombre }}</h3>
+                    <p class="product-description">{{ item.descripcion|truncatechars:100 }}</p>
+                    
+                    <div class="product-price">
+                        {% if item.descuento > 0 %}
+                            <span class="price-original">${{ item.precio_original|floatformat:0 }}</span>
+                            <span class="price-discount">${{ item.precio_final|floatformat:0 }}</span>
+                            <span class="discount-tag">{{ item.descuento }}% OFF</span>
+                        {% else %}
+                            <span class="price-normal">${{ item.precio_original|floatformat:0 }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <a href="{% url 'agregar_carrito' item.id %}" class="btn-add">
+                        <i class="fas fa-cart-plus me-2"></i>Agregar al Carrito
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <i class="fas fa-search"></i>
+                <h3>No hay productos disponibles</h3>
+                <p class="text-muted">Prueba con otros filtros o categorías</p>
+                <a href="{% url 'carta' %}" class="btn btn-primary mt-3">Ver todos</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white text-center py-4 mt-5" style="border-top: 3px solid var(--primary);">
+        <p class="mb-0 text-muted">&copy; 2026 Restaurante Gourmet - Todos los derechos reservados</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

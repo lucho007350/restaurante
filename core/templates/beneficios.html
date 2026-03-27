@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Beneficios - Restaurante Gourmet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c49b63;
+            --primary-dark: #a17a45;
+            --secondary: #5a4a3a;
+            --accent: #e67e22;
+            --dark: #2c3e50;
+            --light: #fef9e7;
+            --gold: #d4af37;
+            --warm-bg: #faf3e0;
+            --card-bg: #ffffff;
+            --text-dark: #3a2e2a;
+            --text-soft: #5d4e46;
+            --bronce: #cd7f32;
+            --plata: #c0c0c0;
+            --oro: #ffd700;
+            --platino: #e5e4e2;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--warm-bg);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Navbar original */
+        .navbar-premium {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            margin: 0 15px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-points {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white !important;
+            border-radius: 30px;
+            padding: 8px 20px !important;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(196, 155, 99, 0.3);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: white;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Benefits Card */
+        .benefits-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            margin: 30px 0 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(196, 155, 99, 0.2);
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            min-width: 150px;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            color: var(--text-soft);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Level Badge */
+        .level-badge {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            padding: 10px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .bronce { background: var(--bronce); color: white; }
+        .plata { background: var(--plata); color: var(--text-dark); }
+        .oro { background: var(--oro); color: var(--text-dark); }
+        .platino { background: var(--platino); color: var(--text-dark); }
+
+        /* Benefits List */
+        .benefits-list {
+            background: #fef9e7;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .benefits-list h4 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .benefits-list li {
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(196, 155, 99, 0.3);
+        }
+
+        .benefits-list li:last-child {
+            border-bottom: none;
+        }
+
+        .benefits-list i {
+            color: var(--primary);
+            margin-right: 15px;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            background: linear-gradient(135deg, #667eea0d, #764ba20d);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .progress {
+            height: 30px;
+            border-radius: 15px;
+            background-color: #f0f0f0;
+        }
+
+        .progress-bar {
+            background: linear-gradient(45deg, var(--primary), var(--gold));
+            border-radius: 15px;
+            line-height: 30px;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Botones */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(196, 155, 99, 0.3);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .stat-value {
+                font-size: 2.5rem;
+            }
+            
+            .benefits-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar original -->
+    <nav class="navbar navbar-premium navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'carta' %}">
+                <i class="fas fa-crown me-2"></i>Gourmet
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'carta' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'mis_beneficios' %}">Beneficios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'historial' %}">Historial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'configurar_preferencias' %}">Preferencias</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    {% if user.is_authenticated %}
+                        <span class="btn-points">
+                            <i class="fas fa-star me-1"></i>{{ puntos }} pts
+                            {% if cliente and cliente.descuento_nivel > 0 %}
+                                <span class="ms-2">{{ cliente.descuento_nivel }}% OFF</span>
+                            {% endif %}
+                        </span>
+                        <a href="{% url 'ver_carrito' %}" class="btn btn-outline-warning">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                        <a href="{% url 'registro' %}" class="btn btn-success">Registro</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Sabores que Enamoran</h1>
+            <p class="hero-subtitle">Descubre nuestra exquisita selección de platillos preparados con los mejores ingredientes</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="benefits-card">
+            <!-- Stats como en la imagen -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-value">{{ puntos }}</div>
+                    <div class="stat-label">PUNTOS ACUMULADOS</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value d-flex align-items-center justify-content-center">
+                        {{ cliente.nivel|title }}
+                        <span class="level-badge {{ cliente.nivel }} ms-3">
+                            <i class="fas fa-crown me-1"></i>{{ cliente.nivel|title }}
+                        </span>
+                    </div>
+                    <div class="stat-label">NIVEL ACTUAL</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ cliente.descuento_nivel }}%</div>
+                    <div class="stat-label">DESCUENTO</div>
+                </div>
+            </div>
+            
+            <!-- Beneficios por nivel -->
+            <div class="benefits-list">
+                <h4>
+                    <i class="fas fa-gift me-2"></i>
+                    Tus beneficios de nivel {{ cliente.nivel|title }}
+                </h4>
+                <ul class="list-unstyled">
+                    {% if cliente.nivel == 'bronce' %}
+                        <li><i class="fas fa-check-circle"></i> 5% de descuento en todas tus compras</li>
+                        <li><i class="fas fa-check-circle"></i> 1 punto por cada $500 en compras</li>
+                        <li><i class="fas fa-check-circle"></i> Acceso a promociones exclusivas</li>
+                    {% elif cliente.nivel == 'plata' %}
+                        <li><i class="fas fa-check-circle"></i> 10% de descuento en todas tus compras</li>
+                        <li><i class="fas fa-check-circle"></i> Bebida gratis en tu cumpleaños</li>
+                        <li><i class="fas fa-check-circle"></i> 1 punto por cada $500 en compras</li>
+                        <li><i class="fas fa-check-circle"></i> Prioridad en reservas</li>
+                    {% elif cliente.nivel == 'oro' %}
+                        <li><i class="fas fa-check-circle"></i> 15% de descuento en todas tus compras</li>
+                        <li><i class="fas fa-check-circle"></i> Postre gratis en cada compra</li>
+                        <li><i class="fas fa-check-circle"></i> Bebida gratis en tu cumpleaños</li>
+                        <li><i class="fas fa-check-circle"></i> 1 punto por cada $500 en compras</li>
+                        <li><i class="fas fa-check-circle"></i> Eventos privados exclusivos</li>
+                    {% elif cliente.nivel == 'platino' %}
+                        <li><i class="fas fa-check-circle"></i> 20% de descuento en todas tus compras</li>
+                        <li><i class="fas fa-check-circle"></i> 2x1 en bebidas todos los viernes</li>
+                        <li><i class="fas fa-check-circle"></i> Postre gratis en cada compra</li>
+                        <li><i class="fas fa-check-circle"></i> Bebida gratis en tu cumpleaños</li>
+                        <li><i class="fas fa-check-circle"></i> 1 punto por cada $500 en compras</li>
+                        <li><i class="fas fa-check-circle"></i> Chef privado en eventos especiales</li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            <!-- Próximo nivel -->
+            {% if siguiente_nivel.nivel != 'Máximo' %}
+            <div class="progress-section">
+                <h5>
+                    <i class="fas fa-rocket me-2" style="color: var(--primary);"></i>
+                    Próximo nivel: {{ siguiente_nivel.nivel }}
+                </h5>
+                <p>Te faltan <strong>{{ siguiente_nivel.puntos_necesarios }}</strong> puntos para alcanzar <strong>{{ siguiente_nivel.descuento }}% de descuento</strong></p>
+                
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped" 
+                         role="progressbar" 
+                         style="width: {{ progreso }}%;" 
+                         aria-valuenow="{{ progreso }}" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100">
+                        {{ progreso }}%
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="alert text-center" style="background: linear-gradient(135deg, var(--gold), #f1c40f); color: var(--text-dark); border: none;">
+                <i class="fas fa-crown fa-3x mb-3"></i>
+                <h4>¡Has alcanzado el nivel máximo!</h4>
+                <p class="mb-0">20% de descuento en todas tus compras</p>
+            </div>
+            {% endif %}
+            
+            <!-- Botón para seguir comprando -->
+            <div class="text-center mt-5">
+                <a href="{% url 'carta' %}" class="btn-primary-custom">
+                    <i class="fas fa-utensils me-2"></i>
+                    Seguir comprando
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white text-center py-4 mt-5" style="border-top: 3px solid var(--primary);">
+        <p class="mb-0 text-muted">&copy; 2026 Restaurante Gourmet - Programa de Beneficios</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

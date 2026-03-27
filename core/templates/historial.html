@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Pedidos - Restaurante Gourmet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c49b63;
+            --primary-dark: #a17a45;
+            --secondary: #5a4a3a;
+            --accent: #e67e22;
+            --dark: #2c3e50;
+            --light: #fef9e7;
+            --gold: #d4af37;
+            --warm-bg: #faf3e0;
+            --card-bg: #ffffff;
+            --text-dark: #3a2e2a;
+            --text-soft: #5d4e46;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--warm-bg);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Estilos del navbar original */
+        .navbar-premium {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            margin: 0 15px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-points {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white !important;
+            border-radius: 30px;
+            padding: 8px 20px !important;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(196, 155, 99, 0.3);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: white;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            min-width: 150px;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            color: var(--text-soft);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        /* Contenedor del historial */
+        .history-container {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            margin: 30px 0 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(196, 155, 99, 0.2);
+        }
+
+        .history-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .history-title i {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        /* Tabla de historial */
+        .history-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+
+        .history-table thead th {
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            border: none;
+        }
+
+        .history-table thead th:first-child {
+            border-radius: 15px 0 0 15px;
+        }
+
+        .history-table thead th:last-child {
+            border-radius: 0 15px 15px 0;
+        }
+
+        .history-table tbody tr {
+            background: #fef9e7;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .history-table tbody tr:hover {
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(196, 155, 99, 0.1);
+            transform: scale(1.01);
+        }
+
+        .history-table td {
+            padding: 20px 15px;
+            vertical-align: middle;
+            border: none;
+        }
+
+        .history-table td:first-child {
+            border-radius: 15px 0 0 15px;
+        }
+
+        .history-table td:last-child {
+            border-radius: 0 15px 15px 0;
+        }
+
+        /* Badges para tipo de pedido */
+        .badge-local {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .badge-domicilio {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        /* ID del pedido */
+        .pedido-id {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        /* Fecha */
+        .pedido-fecha {
+            color: var(--text-soft);
+            font-size: 0.95rem;
+        }
+
+        .pedido-fecha i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        /* Total */
+        .pedido-total {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        /* Botón volver */
+        .btn-back {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-back:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        /* Empty state */
+        .empty-history {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-history i {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .empty-history h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .empty-history p {
+            color: var(--text-soft);
+            margin-bottom: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .history-table {
+                border-spacing: 0 10px;
+            }
+            
+            .history-table td {
+                padding: 15px 10px;
+            }
+            
+            .history-table thead th {
+                font-size: 0.8rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar original -->
+    <nav class="navbar navbar-premium navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'carta' %}">
+                <i class="fas fa-crown me-2"></i>Gourmet
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'carta' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mis_beneficios' %}">Beneficios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'historial' %}">Historial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'configurar_preferencias' %}">Preferencias</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    {% if user.is_authenticated %}
+                        <span class="btn-points">
+                            <i class="fas fa-star me-1"></i>{{ puntos }} pts
+                            {% if cliente and cliente.descuento_nivel > 0 %}
+                                <span class="ms-2">{{ cliente.descuento_nivel }}% OFF</span>
+                            {% endif %}
+                        </span>
+                        <a href="{% url 'ver_carrito' %}" class="btn btn-outline-warning">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                        <a href="{% url 'registro' %}" class="btn btn-success">Registro</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Historial de Pedidos</h1>
+            <p class="hero-subtitle">Revisa todas tus compras anteriores</p>
+        </div>
+    </section>
+
+    <!-- Stats del usuario (si está autenticado) -->
+    {% if user.is_authenticated and cliente %}
+    <div class="container">
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-value">{{ puntos }}</div>
+                <div class="stat-label">PUNTOS ACUMULADOS</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ cliente.nivel|title }}</div>
+                <div class="stat-label">NIVEL ACTUAL</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ cliente.descuento_nivel }}%</div>
+                <div class="stat-label">DESCUENTO</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <!-- Botón volver -->
+        <a href="{% url 'carta' %}" class="btn-back">
+            <i class="fas fa-arrow-left"></i>
+            Volver a la carta
+        </a>
+
+        <div class="history-container">
+            <div class="history-title">
+                <i class="fas fa-history"></i>
+                <h2>Tus Pedidos</h2>
+            </div>
+
+            {% if pedidos %}
+                <div class="table-responsive">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Pedido #</th>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pedido in pedidos %}
+                            <tr>
+                                <td>
+                                    <span class="pedido-id">
+                                        <i class="fas fa-receipt me-2" style="color: var(--primary);"></i>
+                                        #{{ pedido.id }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="pedido-fecha">
+                                        <i class="far fa-calendar-alt"></i>
+                                        {{ pedido.fecha|date:"d/m/Y" }}
+                                        <br>
+                                        <small><i class="far fa-clock"></i> {{ pedido.fecha|date:"H:i" }}</small>
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if pedido.tipo == 'local' %}
+                                        <span class="badge-local">
+                                            <i class="fas fa-store me-1"></i>En restaurante
+                                        </span>
+                                    {% else %}
+                                        <span class="badge-domicilio">
+                                            <i class="fas fa-truck me-1"></i>Domicilio
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="pedido-total">
+                                        $ {{ pedido.total|floatformat:0 }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Resumen de pedidos -->
+                <div class="mt-4 text-end">
+                    <small class="text-muted">
+                        <i class="fas fa-chart-line me-1" style="color: var(--primary);"></i>
+                        Total de pedidos: <strong>{{ pedidos|length }}</strong>
+                    </small>
+                </div>
+            {% else %}
+                <!-- Estado vacío -->
+                <div class="empty-history">
+                    <i class="fas fa-history"></i>
+                    <h3>No tienes pedidos aún</h3>
+                    <p class="text-muted">Parece que todavía no has realizado ninguna compra.</p>
+                    <p class="mb-4">¡Explora nuestra carta y haz tu primer pedido!</p>
+                    <a href="{% url 'carta' %}" class="btn-custom" style="background: linear-gradient(135deg, var(--primary), var(--gold)); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-utensils me-2"></i>
+                        Ver nuestra carta
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white text-center py-4 mt-5" style="border-top: 3px solid var(--primary);">
+        <p class="mb-0 text-muted">&copy; 2026 Restaurante Gourmet - Todos los derechos reservados</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

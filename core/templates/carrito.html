@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Carrito - Restaurante Gourmet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c49b63;
+            --primary-dark: #a17a45;
+            --secondary: #5a4a3a;
+            --accent: #e67e22;
+            --dark: #2c3e50;
+            --light: #fef9e7;
+            --gold: #d4af37;
+            --warm-bg: #faf3e0;
+            --card-bg: #ffffff;
+            --text-dark: #3a2e2a;
+            --text-soft: #5d4e46;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--warm-bg);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Estilos del navbar original */
+        .navbar-premium {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            margin: 0 15px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-points {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white !important;
+            border-radius: 30px;
+            padding: 8px 20px !important;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(196, 155, 99, 0.3);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: white;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(196, 155, 99, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            color: var(--text-soft);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        /* Contenedor del carrito */
+        .cart-container {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            margin: 20px 0 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(196, 155, 99, 0.2);
+        }
+
+        .cart-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cart-title i {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        /* Tabla del carrito */
+        .cart-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+
+        .cart-table thead th {
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            padding: 15px;
+            background: #fef9e7;
+            border-radius: 10px;
+        }
+
+        .cart-table thead th:first-child {
+            border-radius: 15px 0 0 15px;
+        }
+
+        .cart-table thead th:last-child {
+            border-radius: 0 15px 15px 0;
+        }
+
+        .cart-table tbody tr {
+            background: #fef9e7;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .cart-table tbody tr:hover {
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(196, 155, 99, 0.1);
+        }
+
+        .cart-table td {
+            padding: 20px 15px;
+            vertical-align: middle;
+            border: none;
+        }
+
+        .cart-table td:first-child {
+            border-radius: 15px 0 0 15px;
+        }
+
+        .cart-table td:last-child {
+            border-radius: 0 15px 15px 0;
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .product-category {
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        /* Controles de cantidad */
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 5px;
+            border-radius: 50px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-decrease {
+            background: #fff0e6;
+            color: var(--accent);
+        }
+
+        .btn-decrease:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-increase {
+            background: #e6f0e6;
+            color: #27ae60;
+        }
+
+        .btn-increase:hover {
+            background: #27ae60;
+            color: white;
+        }
+
+        .quantity-number {
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        /* Precios */
+        .price-cell {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+
+        .price-discount {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Botón eliminar */
+        .btn-delete {
+            background: transparent;
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-delete:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        /* Resumen del carrito */
+        .cart-summary {
+            background: #fef9e7;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px dashed var(--primary);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(196, 155, 99, 0.2);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--text-soft);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+        .discount-row {
+            color: #27ae60;
+            background: rgba(39, 174, 96, 0.05);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .total-row {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-family: 'Playfair Display', serif;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--primary);
+        }
+
+        .total-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent);
+        }
+
+        /* Botones de acción */
+        .cart-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-custom {
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(196, 155, 99, 0.3);
+            color: white;
+        }
+
+        .btn-secondary-custom {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-secondary-custom:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Carrito vacío */
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-cart i {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .empty-cart h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .empty-cart p {
+            color: var(--text-soft);
+            margin-bottom: 30px;
+        }
+
+        /* Badge de nivel */
+        .level-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .bronce { background: #cd7f32; color: white; }
+        .plata { background: #c0c0c0; color: black; }
+        .oro { background: #ffd700; color: black; }
+        .platino { background: #e5e4e2; color: black; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .cart-table {
+                border-spacing: 0 10px;
+            }
+            
+            .cart-table td {
+                padding: 15px 10px;
+            }
+            
+            .product-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .quantity-control {
+                flex-direction: column;
+                border-radius: 20px;
+            }
+            
+            .cart-actions {
+                flex-direction: column;
+            }
+            
+            .cart-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar original -->
+    <nav class="navbar navbar-premium navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'carta' %}">
+                <i class="fas fa-crown me-2"></i>Gourmet
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'carta' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mis_beneficios' %}">Beneficios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'historial' %}">Historial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'configurar_preferencias' %}">Preferencias</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    {% if user.is_authenticated %}
+                        <span class="btn-points">
+                            <i class="fas fa-star me-1"></i>{{ puntos }} pts
+                            {% if cliente and cliente.descuento_nivel > 0 %}
+                                <span class="ms-2">{{ cliente.descuento_nivel }}% OFF</span>
+                            {% endif %}
+                        </span>
+                        <a href="{% url 'ver_carrito' %}" class="btn btn-outline-warning">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                        <a href="{% url 'registro' %}" class="btn btn-success">Registro</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Mi Carrito</h1>
+            <p class="hero-subtitle">Revisa tus productos antes de confirmar</p>
+        </div>
+    </section>
+
+    <!-- Stats del usuario -->
+    {% if user.is_authenticated and cliente %}
+    <div class="container">
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-value">{{ puntos }}</div>
+                <div class="stat-label">PUNTOS</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value d-flex align-items-center justify-content-center">
+                    {{ cliente.nivel|title }}
+                    <span class="level-badge {{ cliente.nivel }} ms-2">
+                        <i class="fas fa-crown me-1"></i>{{ cliente.descuento_nivel }}%
+                    </span>
+                </div>
+                <div class="stat-label">NIVEL</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ cliente.descuento_nivel }}%</div>
+                <div class="stat-label">DESCUENTO</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="cart-container">
+            <div class="cart-title">
+                <i class="fas fa-shopping-cart"></i>
+                <h2>Tu Carrito</h2>
+            </div>
+
+            {% if carrito.items.all %}
+                <!-- Tabla de productos -->
+                <div class="table-responsive">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>PRODUCTO</th>
+                                <th>CANTIDAD</th>
+                                <th>PRECIO</th>
+                                <th>SUBTOTAL</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in carrito.items.all %}
+                            <tr>
+                                <td>
+                                    <div class="product-info">
+                                        <div class="product-image">
+                                            {% if item.producto.imagen %}
+                                                <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.nombre }}">
+                                            {% else %}
+                                                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Producto">
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <div class="product-name">{{ item.producto.nombre }}</div>
+                                            <div class="product-category">
+                                                <i class="fas fa-tag me-1"></i>{{ item.producto.categoria.nombre }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="quantity-control">
+                                        <a href="{% url 'disminuir_cantidad' item.id %}" class="quantity-btn btn-decrease">
+                                            <i class="fas fa-minus"></i>
+                                        </a>
+                                        <span class="quantity-number">{{ item.cantidad }}</span>
+                                        <a href="{% url 'aumentar_cantidad' item.id %}" class="quantity-btn btn-increase">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="price-cell">
+                                    ${{ item.producto.precio|floatformat:0 }}
+                                </td>
+                                <td class="price-cell fw-bold" style="color: var(--accent);">
+                                    ${{ item.subtotal|floatformat:0 }}
+                                </td>
+                                <td>
+                                    <a href="{% url 'eliminar_item' item.id %}" class="btn-delete" title="Eliminar producto">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Resumen del carrito con DESCUENTO APLICADO -->
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span class="summary-label">Subtotal:</span>
+                        <span class="summary-value">${{ subtotal|floatformat:0 }}</span>
+                    </div>
+                    
+                    {% if cliente and cliente.descuento_nivel > 0 %}
+                    <div class="discount-row">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="summary-label">
+                                <i class="fas fa-tag"></i>
+                                Descuento nivel {{ cliente.nivel|title }} ({{ cliente.descuento_nivel }}%)
+                            </span>
+                            <span class="summary-value text-success">
+                                -${{ descuento|floatformat:0 }}
+                            </span>
+                        </div>
+                        <small class="text-success d-block mt-1">
+                            <i class="fas fa-check-circle"></i> Beneficio aplicado automáticamente
+                        </small>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">
+                            <i class="fas fa-truck"></i>
+                            Envío:
+                        </span>
+                        <span class="summary-value">Gratis</span>
+                    </div>
+                    
+                    <div class="summary-row total-row">
+                        <span class="summary-label">Total a pagar:</span>
+                        <span class="total-value">${{ total_con_descuento|floatformat:0 }}</span>
+                    </div>
+                    
+                    {% if cliente and cliente.descuento_nivel > 0 %}
+                    <div class="text-end mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-star text-warning me-1"></i>
+                            Ahorras ${{ descuento|floatformat:0 }} con tu nivel {{ cliente.nivel|title }}
+                        </small>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Puntos a ganar -->
+                <div class="alert alert-info mt-3 py-2" style="background: #e6f3ff; border: none; border-radius: 10px;">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-star text-warning me-2"></i>
+                        <span>Con esta compra ganarás aproximadamente <strong>{{ puntos_a_ganar }}</strong> puntos</span>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="cart-actions">
+                    <a href="{% url 'carta' %}" class="btn-custom btn-secondary-custom">
+                        <i class="fas fa-arrow-left"></i>
+                        Seguir comprando
+                    </a>
+                    
+                    <form method="post" action="{% url 'confirmar_pedido' %}" style="flex: 1;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-custom btn-primary-custom w-100">
+                            <i class="fas fa-check-circle"></i>
+                            Confirmar Pedido
+                        </button>
+                    </form>
+                </div>
+
+            {% else %}
+                <!-- Carrito vacío -->
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Tu carrito está vacío</h3>
+                    <p class="text-muted mb-4">Parece que aún no has agregado productos a tu carrito.</p>
+                    <a href="{% url 'carta' %}" class="btn-custom btn-primary-custom">
+                        <i class="fas fa-utensils me-2"></i>
+                        Ver nuestra carta
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white text-center py-4 mt-5" style="border-top: 3px solid var(--primary);">
+        <p class="mb-0 text-muted">&copy; 2026 Restaurante Gourmet - Todos los derechos reservados</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
